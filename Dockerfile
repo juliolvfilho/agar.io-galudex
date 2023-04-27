@@ -1,3 +1,11 @@
-FROM node:6-onbuild
+FROM node:8-alpine
 
-EXPOSE 3000
+WORKDIR /usr/src/app
+
+COPY . ./
+
+RUN npm ci
+
+EXPOSE 8080
+
+CMD ["npm","start"]
