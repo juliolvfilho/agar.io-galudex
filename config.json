@@ -3,7 +3,7 @@
     "port": 8080,
     "logpath": "logger.php",
     "foodMass": 1,
-    "fireFood": 20,
+    "fireFood": 5,
     "limitSplit": 16,
     "defaultPlayerMass": 10,
 	"virus": {
