@@ -233,7 +233,10 @@ function setupSocket(socket) {
     });
 
     socket.on('serverMSG', function (data) {
-        window.chat.addSystemLine(data);
+        if (window.chat.lastServerMSG != data) {
+            window.chat.addSystemLine(data);
+            window.chat.lastServerMSG = data;
+        }
     });
 
     // Chat.
