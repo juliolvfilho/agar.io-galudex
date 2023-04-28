@@ -568,12 +568,14 @@ function tickPlayer(currentPlayer) {
         var virusCollision = virus.map(funcFood)
            .reduce( function(a, b, c) { return b ? a.concat(c) : a; }, []);
 
+        var masaGanada = 0;
+        
         if(virusCollision > 0 && currentCell.mass > virus[virusCollision].mass) {
+          masaGanada += Math.floor(virus[virusCollision].mass/2);
           sockets[currentPlayer.id].emit('virusSplit', z);
           virus.splice(virusCollision, 1);
         }
 
-        var masaGanada = 0;
         for(var m=0; m<massEaten.length; m++) {
             masaGanada += massFood[massEaten[m]].masa;
             massFood[massEaten[m]] = {};
