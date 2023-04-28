@@ -506,7 +506,7 @@ function tickPlayer(currentPlayer) {
 
     function check(user) {
         for(var i=0; i<user.cells.length; i++) {
-            if(user.cells[i].mass > 10 && user.id !== currentPlayer.id) {
+            if(/*user.cells[i].mass > 10 && */user.id !== currentPlayer.id) {
                 var response = new SAT.Response();
                 var collided = SAT.testCircleCircle(playerCircle,
                     new C(new V(user.cells[i].x, user.cells[i].y), user.cells[i].radius),
@@ -599,7 +599,8 @@ function tickPlayer(currentPlayer) {
         users.forEach(tree.put);
         var playerCollisions = [];
 
-        var otherUsers =  tree.get(currentPlayer, check);
+        // var otherUsers =  tree.get(currentPlayer, check);
+        users.forEach(check);
 
         playerCollisions.forEach(collisionCheck);
     }
