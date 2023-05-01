@@ -10,7 +10,7 @@ class ChatClient {
         this.commands = {};
         var input = document.getElementById('chatInput');
         input.addEventListener('keypress', this.sendChat.bind(this));
-        input.addEventListener('keyup', function(key) {
+        input.addEventListener('keyup', function (key) {
             input = document.getElementById('chatInput');
             key = key.which || key.keyCode;
             if (key === global.KEY_ESC) {
@@ -112,7 +112,7 @@ class ChatClient {
         key = key.which || key.keyCode;
 
         if (key === global.KEY_ENTER) {
-            var text = input.value.replace(/(<([^>]+)>)/ig,'');
+            var text = input.value.replace(/(<([^>]+)>)/ig, '');
             if (text !== '') {
 
                 // Chat command.
@@ -124,7 +124,7 @@ class ChatClient {
                         this.addSystemLine('Unrecognized Command: ' + text + ', type -help for more info.');
                     }
 
-                // Allows for regular messages to be sent to the server.
+                    // Allows for regular messages to be sent to the server.
                 } else {
                     this.socket.emit('playerChat', { sender: this.player.name, message: text });
                     this.addChatLine(this.player.name, text, true);
