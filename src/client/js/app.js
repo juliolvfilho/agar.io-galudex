@@ -341,7 +341,7 @@ function drawCircle(centerX, centerY, radius, sides, prickly) {
     for (var i = 0; i < sides; i++) {
         var _radius = radius;
         if (prickly) {
-            if (i % 2 == 0) _radius -= 10;
+            if (i % 2 == 0) _radius -= Math.floor(radius/7);
         }
 
         theta = (i / sides) * 2 * Math.PI;
@@ -361,7 +361,7 @@ function drawFood(food) {
     graph.lineWidth = foodConfig.border;
     drawCircle(food.x - player.x + global.screenWidth / 2,
         food.y - player.y + global.screenHeight / 2,
-        food.radius, global.foodSides);
+        food.radius, global.foodSides, food.star);
 }
 
 function drawVirus(virus) {

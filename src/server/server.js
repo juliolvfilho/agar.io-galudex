@@ -65,7 +65,8 @@ function addFood(toAdd) {
             y: position.y,
             radius: radius,
             mass: Math.random() + 2,
-            hue: Math.round(Math.random() * 360)
+            hue: Math.round(Math.random() * 360),
+            star: Math.floor(Math.random() * 100) == 0
         });
     }
 }
@@ -616,6 +617,9 @@ function moveloop() {
     for (i = 0; i < massFood.length; i++) {
         if (massFood[i].speed > 0) moveMass(massFood[i]);
     }
+    food.forEach(function (food) {
+        if (food.star) food.hue = Math.round(Math.random() * 360);
+    });
 }
 
 function gameloop() {
