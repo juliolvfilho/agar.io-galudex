@@ -530,6 +530,7 @@ function tickPlayer(currentPlayer) {
     function collisionCheck(collision) {
         if (collision.aUser.mass > collision.bUser.mass * 1.1 && collision.aUser.radius > Math.sqrt(Math.pow(collision.aUser.x - collision.bUser.x, 2) + Math.pow(collision.aUser.y - collision.bUser.y, 2)) * 1.75) {
             console.log('[DEBUG] Killing user: ' + collision.bUser.id);
+            // comendo um pedaço ou ele todo - tocar o som da faca
 
             var numUser = util.findIndex(users, collision.bUser.id);
             if (numUser > -1) {
@@ -542,7 +543,7 @@ function tickPlayer(currentPlayer) {
                     io.emit('playerDied', {
                         name: collision.bUser.name,
                         killerName: currentPlayer.name,
-                        killerCount: currentPlayer.killCounter
+                        killCounter: currentPlayer.killCounter
                     });
                     sockets[collision.bUser.id].emit('RIP');
                 }

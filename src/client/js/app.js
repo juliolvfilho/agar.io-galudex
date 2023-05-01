@@ -51,6 +51,27 @@ function playDeahSound() {
     document.getElementById('death_' + deathSoundN).play();
 }
 
+function getKillerRanking(killCounter) {
+    if (killCounter <= 0) return '';
+    if (killCounter == 1) return 'First Blood';
+    if (killCounter == 2) return 'Double Kill';
+    if (killCounter == 3) return 'Triple Kill';
+    if (killCounter == 4) return 'Killing Spree';
+    if (killCounter == 5) return 'Mega Kill';
+    if (killCounter == 6) return 'Ultra Kill';
+    if (killCounter == 7) return 'Dominating';
+    if (killCounter == 8) return 'Unstoppable';
+    if (killCounter == 9) return 'Monster Kill';
+    return 'Godlike';
+}
+
+function playKillerRankingSound(killerRanking) {
+    var soundName = killerRanking.toLowerCase().replace(' ', '_');
+    setTimeout( function() {
+        document.getElementById(soundName).play();
+    }, 1000);
+}
+
 window.onload = function () {
 
     var btn = document.getElementById('startButton'),
@@ -206,52 +227,11 @@ function setupSocket(socket) {
 
     socket.on('playerDied', function (data) {
         window.chat.addSystemLine('{GAME} - <b>' + (data.name.length < 1 ? 'An unnamed cell' : data.name) + '</b> was eaten.');
-        var killing_sound = '';
-        var ranking = '';
-        switch(data.killerCount) {
-            case 0:
-                break;
-            case 1:
-                killing_sound = 'first_blood';
-                ranking = 'First Blood';
-                break;
-            case 2:
-                killing_sound = 'double_kill';
-                ranking = 'Double Kill';
-                break;
-            case 3:
-                killing_sound = 'triple_kill';
-                ranking = 'Triple Kill';
-                break;
-            case 4:
-                killing_sound = 'killing_spree';
-                ranking = 'Killing Spree';
-                break;
-            case 5:
-                killing_sound = 'mega_kill';
-                ranking = 'Mega Kill';
-                break;
-            case 6:
-                killing_sound = 'ultra_kill';
-                ranking = 'Ultra Kill';
-                break;
-            case 7:
-                killing_sound = 'dominating';
-                ranking = 'Dominating';
-                break;
-            case 8:
-                killing_sound = 'unstoppable';
-                ranking = 'Unstoppable';
-                break;
-            case 9:
-                killing_sound = 'monster_kill';
-                ranking = 'Monster Kill';
-                break;
-            default:
-                killing_sound = 'godlike';
-                ranking = 'Godlike';
+        var ranking = getKillerRanking(data.killCounter);
+        if (ranking) {
+            window.chat.addSystemLine('{GAME} - <b>' + (data.killerName.length < 1 ? 'An unnamed cell' : data.killerName) + '</b> is ' + ranking +'!');
+            playKillerRankingSound(ranking);
         }
-        window.chat.addSystemLine('{GAME} - <b>' + (data.killerName.length < 1 ? 'An unnamed cell' : data.killerName) + '</b> is ' + ranking +'!');
     });
 
     socket.on('playerDisconnect', function (data) {
