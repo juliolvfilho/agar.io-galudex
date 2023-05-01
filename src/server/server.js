@@ -589,7 +589,9 @@ function tickPlayer(currentPlayer) {
 
         if (virusCollision > 0 && currentCell.mass > virus[virusCollision].mass) {
             masaGanada += Math.floor(virus[virusCollision].mass / 2);
-            sockets[currentPlayer.id].emit('virusSplit', z);
+            if (!currentPlayer.star || currentPlayer.star <= 0) {
+                sockets[currentPlayer.id].emit('virusSplit', z);
+            }
             virus.splice(virusCollision, 1);
         }
 
