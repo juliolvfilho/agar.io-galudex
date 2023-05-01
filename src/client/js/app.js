@@ -46,6 +46,11 @@ function validNick() {
     return regex.exec(playerNameInput.value) !== null;
 }
 
+function playDeahSound() {
+    var deathSoundN = Math.floor(Math.random() * 4) + 1;
+    document.getElementById('death_' + deathSoundN).play();
+}
+
 window.onload = function () {
 
     var btn = document.getElementById('startButton'),
@@ -284,6 +289,7 @@ function setupSocket(socket) {
                 global.animLoopHandle = undefined;
             }
         }, 2500);
+        playDeahSound();
     });
 
     socket.on('kick', function (data) {
