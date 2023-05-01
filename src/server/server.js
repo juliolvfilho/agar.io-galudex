@@ -554,8 +554,14 @@ function tickPlayer(currentPlayer) {
         }
     }
 
+    if (currentPlayer.star && currentPlayer.star > 0) {
+        currentPlayer.star--;
+        currentPlayer.hue = Math.round(Math.random() * 360);
+    }
+
     for (var z = 0; z < currentPlayer.cells.length; z++) {
         var currentCell = currentPlayer.cells[z];
+        currentCell.hue = currentPlayer.hue;
         var playerCircle = new C(
             new V(currentCell.x, currentCell.y),
             currentCell.radius
@@ -564,6 +570,13 @@ function tickPlayer(currentPlayer) {
         var foodEaten = food.map(funcFood)
             .reduce(function (a, b, c) { return b ? a.concat(c) : a; }, []);
 
+        for(var fi = 0; fi < foodEaten.length; fi++) {
+            if (food[foodEaten[fi]].star) {
+                sockets[currentPlayer.id].emit('eatStar');
+                currentPlayer.star = 720;
+                break;
+            }
+        }
         foodEaten.forEach(deleteFood);
 
         var massEaten = massFood.map(eatMass)

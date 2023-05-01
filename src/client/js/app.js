@@ -329,6 +329,10 @@ function setupSocket(socket) {
         socket.emit('2', virusCell);
         reenviar = false;
     });
+
+    socket.on('eatStar', function() {
+        document.getElementById('star_powerup').play();
+    });
 }
 
 function drawCircle(centerX, centerY, radius, sides, prickly) {
