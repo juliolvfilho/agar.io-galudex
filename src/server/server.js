@@ -66,7 +66,7 @@ function addFood(toAdd) {
             radius: radius,
             mass: Math.random() + 2,
             hue: Math.round(Math.random() * 360),
-            star: Math.floor(Math.random() * 100) == 0
+            star: Math.floor(Math.random() * c.starRatio) == 0
         });
     }
 }
@@ -531,10 +531,14 @@ function tickPlayer(currentPlayer) {
     function collisionCheck(collision) {
         if (collision.aUser.mass > collision.bUser.mass * 1.1 && collision.aUser.radius > Math.sqrt(Math.pow(collision.aUser.x - collision.bUser.x, 2) + Math.pow(collision.aUser.y - collision.bUser.y, 2)) * 1.75) {
             console.log('[DEBUG] Killing user: ' + collision.bUser.id);
-            // comendo um pedaço ou ele todo - tocar o som da faca
 
             var numUser = util.findIndex(users, collision.bUser.id);
             if (numUser > -1) {
+                if(users[numUser].star && users[numUser].star > 0) {
+                    console.log('protegido!');
+                    return;
+                }
+
                 if (users[numUser].cells.length > 1) {
                     users[numUser].massTotal -= collision.bUser.mass;
                     users[numUser].cells.splice(collision.bUser.num, 1);
