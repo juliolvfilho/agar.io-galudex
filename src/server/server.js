@@ -306,6 +306,7 @@ io.on('connection', function (socket) {
             player.hue = Math.round(Math.random() * 360);
             currentPlayer = player;
             currentPlayer.lastHeartbeat = new Date().getTime();
+            currentPlayer.killCounter = 0;
             users.push(currentPlayer);
 
             io.emit('playerJoin', { name: currentPlayer.name });
@@ -529,8 +530,6 @@ function tickPlayer(currentPlayer) {
     function collisionCheck(collision) {
         if (collision.aUser.mass > collision.bUser.mass * 1.1 && collision.aUser.radius > Math.sqrt(Math.pow(collision.aUser.x - collision.bUser.x, 2) + Math.pow(collision.aUser.y - collision.bUser.y, 2)) * 1.75) {
             console.log('[DEBUG] Killing user: ' + collision.bUser.id);
-            console.log('[DEBUG] Collision info:');
-            console.log(collision);
 
             var numUser = util.findIndex(users, collision.bUser.id);
             if (numUser > -1) {
@@ -539,7 +538,12 @@ function tickPlayer(currentPlayer) {
                     users[numUser].cells.splice(collision.bUser.num, 1);
                 } else {
                     users.splice(numUser, 1);
-                    io.emit('playerDied', { name: collision.bUser.name });
+                    currentPlayer.killCounter += 1;
+                    io.emit('playerDied', {
+                        name: collision.bUser.name,
+                        killerName: currentPlayer.name,
+                        killerCount: currentPlayer.killCounter
+                    });
                     sockets[collision.bUser.id].emit('RIP');
                 }
             }
