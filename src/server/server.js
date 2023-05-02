@@ -104,15 +104,22 @@ function movePlayer(player) {
         };
         var dist = Math.sqrt(Math.pow(target.y, 2) + Math.pow(target.x, 2));
         var deg = Math.atan2(target.y, target.x);
+
         var slowDown = 1;
-        if (player.cells[i].speed <= 6.25) {
-            slowDown = util.log(player.cells[i].mass, c.slowBase) - initMassLog + 1;
+        if (player.star && player.star > 0) {
+            player.cells[i].speed = c.maxSpeed;
         }
+        else {
+            if (player.cells[i].speed <= c.maxSpeed) {
+                slowDown = util.log(player.cells[i].mass, c.slowBase) - initMassLog + 1;
+            }
+        }
+
 
         var deltaY = player.cells[i].speed * Math.sin(deg) / slowDown;
         var deltaX = player.cells[i].speed * Math.cos(deg) / slowDown;
 
-        if (player.cells[i].speed > 6.25) {
+        if (player.cells[i].speed > c.maxSpeed) {
             player.cells[i].speed -= 0.5;
         }
         if (dist < (50 + player.cells[i].radius)) {
@@ -611,7 +618,7 @@ function tickPlayer(currentPlayer) {
         }
 
         if (typeof (currentCell.speed) == "undefined")
-            currentCell.speed = 6.25;
+            currentCell.speed = c.maxSpeed;
         masaGanada += (foodEaten.length * c.foodMass);
         currentCell.mass += masaGanada;
         currentPlayer.massTotal += masaGanada;
