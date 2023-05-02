@@ -106,7 +106,7 @@ function movePlayer(player) {
         var deg = Math.atan2(target.y, target.x);
 
         var slowDown = 1;
-        if (player.star && player.star > 0) {
+        if (player.star) {
             player.cells[i].speed = c.maxSpeed;
         }
         else {
@@ -541,7 +541,7 @@ function tickPlayer(currentPlayer) {
 
             var numUser = util.findIndex(users, collision.bUser.id);
             if (numUser > -1) {
-                if(users[numUser].star && users[numUser].star > 0) {
+                if(users[numUser].star) {
                     console.log('protegido!');
                     return;
                 }
@@ -565,9 +565,13 @@ function tickPlayer(currentPlayer) {
         }
     }
 
-    if (currentPlayer.star && currentPlayer.star > 0) {
-        currentPlayer.star--;
-        currentPlayer.hue = Math.round(Math.random() * 360);
+    if (currentPlayer.star) {
+        if ( (new Date()).getTime() - currentPlayer.star > 12000 ) {
+            currentPlayer.star = null;
+        }
+        else {
+            currentPlayer.hue = Math.round(Math.random() * 360);
+        }
     }
 
     for (var z = 0; z < currentPlayer.cells.length; z++) {
@@ -584,7 +588,7 @@ function tickPlayer(currentPlayer) {
         for(var fi = 0; fi < foodEaten.length; fi++) {
             if (food[foodEaten[fi]].star) {
                 sockets[currentPlayer.id].emit('eatStar');
-                currentPlayer.star = 720;
+                currentPlayer.star = (new Date()).getTime();
                 break;
             }
         }
@@ -600,7 +604,7 @@ function tickPlayer(currentPlayer) {
 
         if (virusCollision > 0 && currentCell.mass > virus[virusCollision].mass) {
             masaGanada += Math.floor(virus[virusCollision].mass / 2);
-            if (!currentPlayer.star || currentPlayer.star <= 0) {
+            if (!currentPlayer.star) {
                 sockets[currentPlayer.id].emit('virusSplit', z);
             }
             virus.splice(virusCollision, 1);

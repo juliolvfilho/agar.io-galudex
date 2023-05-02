@@ -331,6 +331,7 @@ function setupSocket(socket) {
     });
 
     socket.on('eatStar', function() {
+        document.getElementById('star_powerup').currentTime = 0;
         document.getElementById('star_powerup').play();
     });
 }
